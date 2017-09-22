@@ -8,44 +8,56 @@ namespace rnnlib
 {
     public class NNUnit
     {
-        private List<Cell> _cells = null;
         private RandomManager _randomManager = null;
 
-        public NNUnit()
+        private List<Cell> _cells = null;
+        private int _totalNumOfCells = 0;
+        private int _numInputCells = 0;
+        private int _numOutputCells = 0;
+
+        public List<Cell> Cells { get => _cells; set => _cells = value; }
+        public int TotalNumOfCells { get => _totalNumOfCells; set => _totalNumOfCells = value; }
+        public int NumInputCells { get => _numInputCells; set => _numInputCells = value; }
+        public int NumOutputCells { get => _numOutputCells; set => _numOutputCells = value; }
+
+        public NNUnit(int totalNumOfCells, int numInputCells, int numOutputCells)
         {
-            _cells = new List<Cell>();
+            totalNumOfCells = TotalNumOfCells;
+            numInputCells = NumInputCells;
+            numOutputCells = NumOutputCells;
+
+            Cells = new List<Cell>();
             _randomManager = new RandomManager();
 
             createCells();
-            assignCells(1024, true);
-            assignCells(2, false);
+            assignCells(NumInputCells, true);
+            assignCells(NumOutputCells, false);
             connectCells();
         }
 
         private void createCells()
         {
-            int numberOfCells = 10000;
-            for (int i = 0; i < numberOfCells; ++i)
+            for (int i = 0; i < TotalNumOfCells; ++i)
             {
-                _cells.Add(new Cell());
+                Cells.Add(new Cell());
             }
 
-            Console.WriteLine(numberOfCells.ToString() + " cells were created...");
+            Console.WriteLine(TotalNumOfCells.ToString() + " cells were created...");
         }
 
         private void connectCells()
         {
-            int numOfCells = _cells.Count;
+            int numOfCells = Cells.Count;
             int numOfConnections = 0;
 
             for (int i = 0; i < numOfCells; ++i)
             {
-                int indexSource = _randomManager.getRandom(_cells.Count);
-                int indexDest = _randomManager.getRandom(_cells.Count);
-                if (!_cells[indexSource].IsFirstLayer)
+                int indexSource = _randomManager.getRandom(Cells.Count);
+                int indexDest = _randomManager.getRandom(Cells.Count);
+                if (!Cells[indexSource].IsFirstLayer)
                 {
-                    _cells[indexSource].Outputs.Add(_cells[indexDest]);
-                    _cells[indexDest].Inputs.Add(_cells[indexSource]);
+                    Cells[indexSource].Outputs.Add(Cells[indexDest]);
+                    Cells[indexDest].Inputs.Add(Cells[indexSource]);
                     numOfConnections++;
                 }
             }
@@ -58,13 +70,13 @@ namespace rnnlib
             int numberOfMarkedCells = 0;
             while (numberOfMarkedCells < numberOfCells)
             {
-                int index = _randomManager.getRandom(_cells.Count);
-                if (!_cells[index].IsFirstLayer && !_cells[index].IsLastLayer)
+                int index = _randomManager.getRandom(Cells.Count);
+                if (!Cells[index].IsFirstLayer && !Cells[index].IsLastLayer)
                 {
                     if (markInput)
-                        _cells[index].IsFirstLayer = true;
+                        Cells[index].IsFirstLayer = true;
                     else
-                        _cells[index].IsLastLayer = true;
+                        Cells[index].IsLastLayer = true;
 
                     numberOfMarkedCells++;
                 }

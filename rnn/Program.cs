@@ -12,7 +12,7 @@ namespace rnn
     {
         static void Main(string[] args)
         {
-            NNUnit unit = new NNUnit();
+            NNUnit unit = new NNUnit(10000, 1024, 2);
             Console.WriteLine("Press enter to close...");
             Console.ReadLine();
         }
