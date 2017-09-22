@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "rnn", "rnn\rnn.csproj", "{2999ABFF-DFA3-40AF-B06D-A5D317A9F717}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "rnnlib", "rnnlib\rnnlib.csproj", "{34952C53-DE69-473D-A651-F50B76735042}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2999ABFF-DFA3-40AF-B06D-A5D317A9F717}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2999ABFF-DFA3-40AF-B06D-A5D317A9F717}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2999ABFF-DFA3-40AF-B06D-A5D317A9F717}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2999ABFF-DFA3-40AF-B06D-A5D317A9F717}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34952C53-DE69-473D-A651-F50B76735042}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34952C53-DE69-473D-A651-F50B76735042}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34952C53-DE69-473D-A651-F50B76735042}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34952C53-DE69-473D-A651-F50B76735042}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BA375BD3-62CE-4FA1-BD70-84523F5E6447}
+	EndGlobalSection
+EndGlobal
