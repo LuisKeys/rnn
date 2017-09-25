@@ -11,22 +11,35 @@ namespace rnnlib
         private RandomManager _randomManager = null;
 
         private List<Cell> _cells = null;
+        private List<Cell> _inputCells = null;
+        private double []  _inputValues = null;
         private int _totalNumOfCells = 0;
         private int _numInputCells = 0;
         private int _numOutputCells = 0;
+        private int _maxNumOfConnectionsPercell = 0;
 
         public List<Cell> Cells { get => _cells; set => _cells = value; }
+        public List<Cell> InputCells { get => _inputCells; set => _inputCells = value; }
         public int TotalNumOfCells { get => _totalNumOfCells; set => _totalNumOfCells = value; }
         public int NumInputCells { get => _numInputCells; set => _numInputCells = value; }
         public int NumOutputCells { get => _numOutputCells; set => _numOutputCells = value; }
+        public double[] InputValues { get => _inputValues; set => _inputValues = value; }
+        public int MaxNumOfConnectionsPercell { get => _maxNumOfConnectionsPercell; set => _maxNumOfConnectionsPercell = value; }
 
-        public NNUnit(int totalNumOfCells, int numInputCells, int numOutputCells)
+        public NNUnit(int totalNumOfCells, 
+                      int numInputCells, 
+                      int numOutputCells, 
+                      int maxNumOfConnectionsPercell)
         {
-            totalNumOfCells = TotalNumOfCells;
-            numInputCells = NumInputCells;
-            numOutputCells = NumOutputCells;
+            TotalNumOfCells = totalNumOfCells;
+            NumInputCells = numInputCells;
+            NumOutputCells = numOutputCells;
+            MaxNumOfConnectionsPercell = maxNumOfConnectionsPercell;
+
+            _inputValues = new double[totalNumOfCells];
 
             Cells = new List<Cell>();
+            InputCells = new List<Cell>();
             _randomManager = new RandomManager();
 
             createCells();
@@ -50,17 +63,22 @@ namespace rnnlib
             int numOfCells = Cells.Count;
             int numOfConnections = 0;
 
-            for (int i = 0; i < numOfCells; ++i)
-            {
-                int indexSource = _randomManager.getRandom(Cells.Count);
-                int indexDest = _randomManager.getRandom(Cells.Count);
-                if (!Cells[indexSource].IsFirstLayer)
+            for (int j = 0; j < numOfCells; ++j)
+                for (int i = 0; i < numOfCells; ++i)
                 {
-                    Cells[indexSource].Outputs.Add(Cells[indexDest]);
-                    Cells[indexDest].Inputs.Add(Cells[indexSource]);
-                    numOfConnections++;
+                    int indexSource = _randomManager.getRandom(Cells.Count);
+                    int indexDest = _randomManager.getRandom(Cells.Count);
+
+                    if (!Cells[indexSource].IsLastLayer && !Cells[indexDest].IsFirstLayer)
+                    {
+                        if (Cells[indexSource].Outputs.Count < _maxNumOfConnectionsPercell)
+                        {
+                            Cells[indexSource].Outputs.Add(Cells[indexDest]);
+                            Cells[indexDest].Inputs.Add(Cells[indexSource]);
+                            numOfConnections++;
+                        }
+                    }
                 }
-            }
 
             Console.WriteLine(numOfConnections.ToString() + " connections were created...");
         }
@@ -74,7 +92,10 @@ namespace rnnlib
                 if (!Cells[index].IsFirstLayer && !Cells[index].IsLastLayer)
                 {
                     if (markInput)
+                    {
                         Cells[index].IsFirstLayer = true;
+                        InputCells.Add(Cells[index]);
+                    }
                     else
                         Cells[index].IsLastLayer = true;
 
@@ -86,6 +107,14 @@ namespace rnnlib
                 Console.WriteLine(numberOfMarkedCells.ToString() + " cells were marked as input...");
             else
                 Console.WriteLine(numberOfMarkedCells.ToString() + " cells were marked as output...");
+        }
+
+        public void resetCells()
+        {
+            foreach (Cell cell in _cells)
+            {
+                cell.InputValue = 0;
+            }
         }
 
     }

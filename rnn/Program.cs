@@ -12,7 +12,17 @@ namespace rnn
     {
         static void Main(string[] args)
         {
-            NNUnit unit = new NNUnit(10000, 1024, 2);
+            //Create RNN
+            NNUnit unit = new NNUnit(10000, 4096, 2, 100);
+
+            //Load a picture
+            FeatureLoader fl = new FeatureLoader();
+            string file = fl.getDownloadFolderPath() + "perro0001.bmp";
+            fl.loadPicture(file, unit);
+
+            Calculations calc = new Calculations();
+            calc.forwardProp(unit);
+
             Console.WriteLine("Press enter to close...");
             Console.ReadLine();
         }
