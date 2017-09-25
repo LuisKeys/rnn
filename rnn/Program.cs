@@ -13,7 +13,7 @@ namespace rnn
         static void Main(string[] args)
         {
             //Create RNN
-            NNUnit unit = new NNUnit(10000, 4096, 2, 100);
+            NNUnit unit = new NNUnit(12000, 4096, 2, 100, 3);
 
             //Load a picture
             FeatureLoader fl = new FeatureLoader();
